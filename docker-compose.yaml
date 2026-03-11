@@ -1,0 +1,11 @@
+services:
+  cups:
+    build: .
+    container_name: cups-airprint
+    restart: always
+    privileged: true
+    network_mode: host
+    volumes:
+      - /var/run/dbus:/var/run/dbus  # Use DBUS instead of the Avahi socket
+    environment:
+      - TZ=Asia/Tokyo
