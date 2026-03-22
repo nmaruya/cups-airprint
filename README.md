@@ -64,6 +64,21 @@ Critical notes for OMV users:
 - **Devices**: You must map `/dev/usb/lp0` so the container can see the physical printer.
 - **Volumes**: Mapping `/var/run/dbus` helps resolve color management errors.
 
+## 📥 Drivers Requirement
+
+Due to licensing restrictions, the proprietary Canon CAPT drivers are not bundled with this repository. You must download them manually and place them in the `./drivers` folder before building the image.
+
+**Supported Driver Version:** 2.71 (or latest)  
+**Download Link:** [Canon Europe - CAPT Printer Driver for Linux](https://www.canon-europe.com/support/consumer_products/products/lbp3300.html?type=drivers&os=linux%20(64-bit))
+
+### How to prepare the drivers:
+1. Download the `linux-capt-drv-v271-uk.tar.gz` (or similar) from the link above.
+2. Extract the archive.
+3. Locate the `64nd_deb` (or `Debian`) folder.
+4. Copy these two specific files into the `drivers/` directory of this repo:
+   - `cndrvcups-common_3.21-1_amd64.deb`
+   - `cndrvcups-capt_2.71-1_amd64.deb`
+
 ## ⚠️ Troubleshooting
 
 ### Printer "Processing" but nothing happens
