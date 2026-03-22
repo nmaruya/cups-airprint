@@ -12,6 +12,22 @@ This image is optimized for **OpenMediaVault (OMV)** and other headless Linux se
 - **AirPrint / Avahi**: Pre-configured for discovery on iOS and macOS.
 - **Auto-Start**: Includes a custom entrypoint to ensure the `ccpd` daemon starts with the container.
 
+```mermaid
+graph TD
+    User([iPhone / Mac]) -- "AirPrint" --> Avahi[Avahi Daemon]
+    User -- "Print Job" --> CUPS[CUPS Server]
+    
+    subgraph Docker_Container [Docker: cups-canon]
+        CUPS -- "ccp://localhost" --> CCPD{CCPD Daemon}
+        Avahi -- "Discovery" --> CUPS
+    end
+
+    CCPD -- "CAPT Protocol" --> USB["/dev/usb/lp0"]
+    USB -- "Hardware" --> Printer[Canon LBP3300]
+
+    style Printer fill:#f96,stroke:#333,stroke-width:2px
+    style CCPD fill:#9cf,stroke:#333,stroke-width:1px
+```
 ## 🛠 Prerequisites
 
 1. **Identify the USB Path**: 
