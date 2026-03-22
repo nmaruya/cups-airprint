@@ -1,11 +1,14 @@
 services:
-  cups:
+  cups-lbp3300:
     build: .
-    container_name: cups-airprint
-    restart: always
-    privileged: true
-    network_mode: host
+    container_name: cups-canon
+    network_mode: host # Critical for AirPrint/Avahi discovery
+    restart: unless-stopped
     volumes:
-      - /var/run/dbus:/var/run/dbus  # Use DBUS instead of the Avahi socket
+      - /var/run/dbus:/var/run/dbus
+      - ./config:/etc/cups
+    devices:
+      - /dev/usb:/dev/usb # Allows Docker to see the physical printer
     environment:
-      - TZ=Asia/Tokyo
+      - ADMIN_USER=admin
+      - ADMIN_PASSWORD=yourpassword
