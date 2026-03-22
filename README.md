@@ -86,4 +86,18 @@ This usually means the `ccpd` daemon has lost its connection.
 - Run `docker exec cups-canon service ccpd status`.
 - If it is not running, run `docker exec cups-canon service ccpd restart`.
 
+
+---
+
+## ⚖️ License & Legal
+
+### Repository License
+The scripts, `Dockerfile`, and configuration files in this repository are provided under the **MIT License**. You are free to use, modify, and distribute them.
+
+### Proprietary Software Notice
+The **Canon CAPT (Canon Advanced Printing Technology)** drivers required for this project are the proprietary property of **Canon Inc.** - This repository **does not** bundle or redistribute the proprietary driver files.
+- Users must agree to Canon's End User License Agreement (EULA) when downloading the drivers from the official Canon support website.
+- The author of this repository is not affiliated with, endorsed by, or supported by Canon Inc.
+
+---
 ***
