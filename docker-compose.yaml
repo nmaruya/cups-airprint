@@ -1,28 +1,13 @@
 services:
-  cups-canon:
+  cups:
     build: .
-    container_name: cups-canon
-    restart: unless-stopped
-    # Host mode is mandatory for AirPrint/Avahi discovery to work
+    container_name: cups-airprint
+    restart: always
+    privileged: true
     network_mode: host
-    
-    # Required for the printer hardware and system communication
-    devices:
-      - /dev/usb:/dev/usb
-    
     volumes:
-      - /var/run/dbus:/var/run/dbus
-      # Optional: Persist your CUPS settings even if the container is deleted
-      - ./config:/etc/cups
-      
+      - /var/run/dbus:/var/run/dbus  # Use DBUS instead of the Avahi socket
+      - ./cups-config:/etc/cups
+#      - /var/run/avahi-daemon/socket:/var/run/avahi-daemon/socket
     environment:
-      - TZ=Asia/Tokyo  # Change to your timezone
-      - USERNAME=admin
-      - PASSWORD=your_secure_password
-
-    # Healthcheck ensures the CUPS service is actually responding
-    healthcheck:
-      test: ["CMD", "lpstat", "-r"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      - TZ=Asia/Tokyo
