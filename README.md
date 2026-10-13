@@ -38,6 +38,15 @@ graph TD
 3. **Driver Files**:
    Place the official Canon `.deb` driver files (Common and CAPT) into a `./drivers` folder before building.
 
+## 🔧 Architecture & Startup Pipeline
+
+When the container launches, `/start-everything.sh` executes the following sequence:
+
+1. **Permission Fixes:** Grants `lp:lp` ownership over `/var/spool/cups` and sets `777` write access on `/var/spool/cups/tmp` to allow `pdftops` and `pstocapt2` filters to process incoming iOS PDF print jobs.
+2. **CUPS Library Audit:** Resets `/usr/lib/cups` to `755 root:root` to prevent CUPS internal security rejections.
+3. **PPD & Spooler Registration:** Binds `Canon_LBP3300` using `CNCUPSLBP3300CAPTK.ppd` to the local CAPT FIFO socket `ccp://localhost:59687`.
+4. **CAPT Daemon Binding:** Registers the network endpoint `ccpdadmin -p Canon_LBP3300 -o net:192.168.1.252` and restarts `/etc/init.d/ccpd`.
+
 ## 📦 Installation
 
 ### 1. Clone and Build
@@ -102,6 +111,23 @@ This usually means the `ccpd` daemon has lost its connection.
 - Run `docker exec cups-canon service ccpd status`.
 - If it is not running, run `docker exec cups-canon service ccpd restart`.
 
+### Check Printer & Driver Status
+```bash
+# Check CAPT driver binding and queue status
+docker exec -it cups-airprint ccpdadmin
+
+# Check CUPS spool queue
+docker exec -it cups-airprint lpstat -o
+```
+
+### Direct Terminal Test Print
+```bash
+docker exec -it cups-airprint lp -d Canon_LBP3300 /etc/hosts
+```
+
+### Monitor Real-Time Logs
+```bash
+docker exec -it cups-airprint tail -f /var/log/cups/error_log
 
 ---
 
